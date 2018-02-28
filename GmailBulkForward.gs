@@ -1,7 +1,7 @@
 //   A		B		C
 // 1 Name	BulkForwardTo	GmailSearchOperator
-// 2 ComSys	ml@example.Com	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (c-ap OR c-db) -High:0"
-// 3 NetSys	ml@example.Net	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (n-ap OR n-db) -High:0"
+// 2 ComSys	ml@example.Com	"newer_than:1d from:(you@example.jp) to:(me@example.jp) subject:[vuls] (c-ap OR c-db) -High:0"
+// 3 NetSys	ml@example.Net	"newer_than:1d from:(you@example.jp) to:(me@example.jp) subject:[vuls] (n-ap OR n-db) -High:0"
 
 function GmailBulkForward(){
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
