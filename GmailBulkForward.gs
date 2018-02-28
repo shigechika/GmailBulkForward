@@ -1,7 +1,7 @@
 //   A		B		C
 // 1 Name	BulkForwardTo	GmailSearchOperator
-// 2 ComSrvs	ml@example.com	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (com1 OR com2) -{Hight:0}"
-// 3 NnetSrvs	ml@example.net	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (net1 OR net2) -{Hight:0}"
+// 2 ComSys	ml@example.Com	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (c-ap OR c-db) -High:0"
+// 3 NetSys	ml@example.Net	"newer_than:1d from:(from@example.jp) to:(me@example.jp) subject:[vuls] (n-ap OR n-db) -High:0"
 
 function GmailBulkForward(){
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -26,20 +26,24 @@ function GmailBulkForward(){
     }
     
     var arryBlob = [];
+    var summary = "";
+    var total = 0;
     
     for (var t in threads) {
       var thread = threads[t];
       var msgs = thread.getMessages();           
       for(var m in msgs){
         var msg = msgs[m];
-        arryBlob.push( Utilities.newBlob(msg.getPlainBody()).setName(msg.getSubject()));        
+	var name = msg.getSubject();
+        arryBlob.push(Utilities.newBlob(msg.getPlainBody()).setName(name));        
       }
+      summary += name + '\n';
+      total++;
     }
     
-    var date = new Date();
     GmailApp.sendEmail(recipient,
       subject,
-      Utilities.formatDate(date, "Asia/Tokyo", "yyyy-MM-dd'T'HH:mm:ss.SSSZ") , // body
+      "total:" + total "\n" + summary + "-- GmailBulkForward\n" , // body
       { noReply: true, attachments: arryBlob });
     Utilities.sleep(1000);
   }
