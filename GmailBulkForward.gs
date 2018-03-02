@@ -26,8 +26,7 @@ function GmailBulkForward(){
     }
     
     var arryBlob = [];
-    var summary = "";
-    var total = 0;
+    var summary = [];
     
     for (var t in threads) {
       var thread = threads[t];
@@ -37,13 +36,14 @@ function GmailBulkForward(){
 	var name = msg.getSubject();
         arryBlob.push(Utilities.newBlob(msg.getPlainBody()).setName(name));        
       }
-      summary += name + '\n';
-      total++;
+      summary.push(name);
     }
-    
+    arryBlob.sort(function (a, b) {
+        return a.getName() > b.getName() ? 1 : -1;
+    });    
     GmailApp.sendEmail(recipient,
       subject,
-      "total:" + total "\n" + summary + "-- GmailBulkForward\n" , // body
+      "total:" + summary.length "\n" + summary.sort().join('\n') + "\n-- GmailBulkForward\n" , // body
       { noReply: true, attachments: arryBlob });
     Utilities.sleep(1000);
   }
