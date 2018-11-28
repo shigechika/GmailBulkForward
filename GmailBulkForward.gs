@@ -18,10 +18,13 @@ function GmailBulkForward(){
     Logger.log("recipient:" + recipient);
     var search = sheet.getRange(r, 3).getValue();
     Logger.log("search:" + search);
+    if ( !subject || !recipient || !search ) {
+      continue; // empty
+    }
+
     var threads = GmailApp.search(search, start, max);
     Logger.log("threads.length:" + threads.length);
-    
-    if ( ! threads.length ) {
+    if ( !threads.length ) {
       continue; // not found
     }
     
